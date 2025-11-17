@@ -1,4 +1,4 @@
-# LIRS Caching algortithm
+# LIRS Caching algorithm
 ----
 ## Installation process
 
