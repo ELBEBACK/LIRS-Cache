@@ -2,7 +2,7 @@
 #include <cassert>
 #include "lirs.hpp"
 
-int slowgetpage(int key) { return key; }
+static int slowgetpage(int key) { return key; }
 
 int main() {
     int hits = 0;
