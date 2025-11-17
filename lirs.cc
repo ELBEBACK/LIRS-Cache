@@ -17,7 +17,7 @@ int main() {
 
     assert(std::cin.good());
 
-    caches::cache_t<int> cache{m};
+    caches::cache_t<int, int> cache{m};
     
     for (int i = 0; i < n; ++i) {
         int query;

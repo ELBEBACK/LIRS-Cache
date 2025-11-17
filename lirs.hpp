@@ -8,7 +8,7 @@
 
 namespace caches {
 
-template <typename T, typename KeyT = int> 
+template <typename KeyT, typename T> 
 class cache_t{
 
     size_t cache_capacity_;
@@ -25,8 +25,8 @@ class cache_t{
     };
 
     
-    std::list<KeyT> stackS_;
-    std::list<KeyT> queueQ_;
+    std::list<KeyT> stack_;
+    std::list<KeyT> queue_;
 
     
     std::unordered_map<KeyT, LIRSBlock> cache_;
@@ -34,58 +34,50 @@ class cache_t{
 
 private:
 
-    void alloccate_capacities() {
+    static size_t calcHIR(size_t cache_capacity){
         
-        if (cache_capacity_ <= 3) {
-            HIR_capacity_ = 1;
-        } else if (cache_capacity_ <= 20) { 
-            HIR_capacity_ = 2;
-        } else if (cache_capacity_ <= 30) {
-            HIR_capacity_ = 3;
-        } else if (cache_capacity_ <= 50) {
-            HIR_capacity_ = 4; 
-        } else {
-            HIR_capacity_ = cache_capacity_ / 20; 
-        }
+        if (cache_capacity <= 3) 
+            return 1;
+        if (cache_capacity <= 20)  
+            return 2;
+        if (cache_capacity <= 30) 
+            return 3;
+        if (cache_capacity <= 50) 
+            return 4; 
+        return cache_capacity / 20;
 
     }
 
     
-    bool is_inQueue(KeyT key) const {
-        auto it = std::find(queueQ_.begin(), queueQ_.end(), key);
-        if (it == queueQ_.end()) return false;
-        return true;
+    bool is_inQueue(const KeyT &key) const {
+        return std::ranges::contains(queue_, key);
     }
 
     
     CacheIt coldestLIR_toHIR() {
         CacheIt cIt;
-        for (auto it = stackS_.rbegin(); it != stackS_.rend(); ++it) {
+        for (auto it = stack_.rbegin(); it != stack_.rend(); ++it) {
             cIt = cache_.find(*it);
             if (cIt->second.is_LIR) {
                 cIt->second.is_LIR = false;
-                break;
+                return cIt;
             }   
         }
-        return cIt;
+        //It is guaranteed that either LIR blocks exist or there are no blocks in stack
+        return cache_.end();
     }
 
     
     bool is_full() const {
-        return (stackS_.size() < cache_capacity_);
+        return (stack_.size() == cache_capacity_);
     }
 
-
-    KeyT getQHead() {
-        return *(queueQ_.begin()); 
-    }
 
 public:
     
-    cache_t(size_t sz) : cache_capacity_(sz) {
-        alloccate_capacities();
-        LIR_capacity_ = cache_capacity_ - HIR_capacity_;
-    }
+    explicit cache_t(size_t sz) : cache_capacity_(sz),
+                        HIR_capacity_(calcHIR(sz)), 
+                        LIR_capacity_(cache_capacity_ - HIR_capacity_) {}
     
 
     template <typename F> bool lookup_update(KeyT key, F slowgetpage) {
@@ -96,51 +88,52 @@ public:
             LIRSBlock newcomer = {};
             newcomer.value = slowgetpage(key);
             
-            if (stackS_.size() < LIR_capacity_) {
+            if (stack_.size() < LIR_capacity_) {
                 newcomer.is_LIR = true;
 
-                newcomer.queueIt = queueQ_.end();
+                newcomer.queueIt = queue_.end();
             } else if (!is_full()) {
                 newcomer.is_LIR = false;
 
-                queueQ_.emplace_back(key);
-                newcomer.queueIt = --(queueQ_.end());
+                queue_.emplace_back(key);
+                newcomer.queueIt = --(queue_.end());
             } else {
                 newcomer.is_LIR = false;
                 
-                stackS_.erase(queueQ_.begin());
+                stack_.erase(find(stack_.begin(), stack_.end(), queue_.front()));
                 
-                queueQ_.emplace_back(key);
-                newcomer.queueIt = --(queueQ_.end());
-                queueQ_.pop_front();
+                queue_.emplace_back(key);
+                newcomer.queueIt = --(queue_.end());
+                queue_.pop_front();
             }
             
-            stackS_.emplace_front(key);
-            newcomer.stackIt = stackS_.begin();
+            stack_.emplace_front(key);
+            newcomer.stackIt = stack_.begin();
 
             if (!is_full()) {
                 cache_.emplace(key, newcomer);
             } else {
-                cache_.emplace(cache_.find(getQHead()), key, newcomer);
+                cache_.erase(queue_.front());
+                cache_.emplace(key, newcomer);
             }
             return false;
         
         }
 
 
-        LIRSBlock hitval = hit->second;
+        LIRSBlock& hitval = hit->second;
         if (is_inQueue(key)) {
             hitval.is_LIR = true;
-            queueQ_.erase(hitval.queueIt);
-            hitval.queueIt = queueQ_.end();
+            queue_.erase(hitval.queueIt);
+            hitval.queueIt = queue_.end();
 
             auto cooled_down = coldestLIR_toHIR();
-            queueQ_.emplace_back(cooled_down->first);
-            cooled_down->second.queueIt = --(queueQ_.end());
+            queue_.emplace_back(cooled_down->first);
+            cooled_down->second.queueIt = --(queue_.end());
         } 
         
-        stackS_.splice(stackS_.begin(), stackS_, hitval.stackIt);
-        hitval.stackIt = stackS_.begin();
+        stack_.splice(stack_.begin(), stack_, hitval.stackIt);
+        hitval.stackIt = stack_.begin();
 
         return true;
     }
