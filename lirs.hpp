@@ -102,20 +102,16 @@ public:
                 
                 stack_.erase(find(stack_.begin(), stack_.end(), queue_.front()));
                 
+                cache_.erase(queue_.front());
+                queue_.pop_front();
                 queue_.emplace_back(key);
                 newcomer.queueIt = --(queue_.end());
-                queue_.pop_front();
             }
             
             stack_.emplace_front(key);
             newcomer.stackIt = stack_.begin();
 
-            if (!is_full()) {
-                cache_.emplace(key, newcomer);
-            } else {
-                cache_.erase(queue_.front());
-                cache_.emplace(key, newcomer);
-            }
+            cache_.emplace(key, newcomer);
             return false;
         
         }
