@@ -12,7 +12,7 @@ git clone git@github.com:ELBEBACK/LIRS-Cache.git
 mkdir build
 cd build/
 
-cmake ..
+cmake ../lirs
 make
 ```
 ----
