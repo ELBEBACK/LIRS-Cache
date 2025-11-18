@@ -8,20 +8,22 @@ git clone git@github.com:ELBEBACK/LIRS-Cache.git
 ```
 - **Navigate to the repository directory** 
 - **Build the project using the following sequence of commands:**
-```bash
+```cpp
 mkdir build
 cd build/
 
-cmake ../lirs
+cmake ../lirs   // or cmake ../oracle, depends on what you want to test
 make
 ```
 ----
 ## How to use 
-### LIRS
+### LIRS or IDEAL(Oracle)
 
 - **To run the program**
-```bash
+```
 ./lirs
+or
+./oracle
 ```
 - **The input requires the number of slots in cache M, the number of queries N and the sequence of N queries' keys**
 
@@ -38,6 +40,6 @@ make
 ```bash
 ./tests
 ```
-- **The tests located in `proj/tests/tests.cc` are E2E tests**
-- **Everyone can add their testcases simply using included test blocks as templates**
+- **The tests located in `proj/tests/tests.cc`**
+- **Everyone can add their testcases to the `tests.cc` simply using included test blocks as templates**
 ----
