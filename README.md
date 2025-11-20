@@ -40,6 +40,6 @@ or
 ```bash
 ./tests
 ```
-- **The tests are located in `proj/tests/tests.cc`**
-- **Everyone can add their testcases to the `tests.cc` simply using included test blocks as templates**
+- **The tests located in `proj/tests/tests.cc` are E2E tests**
+- **Everyone can add their testcases simply using included test blocks as templates**
 ----
