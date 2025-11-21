@@ -81,13 +81,6 @@ TEST(CacheTest, Comprehensive_FifthSizeGroup)
 }
 
 
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
-
-
 int get_cache_hits(caches::cache_t<int, int> &cache, std::vector<int> &data) {
     
     int hits = 0;
