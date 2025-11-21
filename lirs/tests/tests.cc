@@ -3,7 +3,7 @@
 #include <string>
 #include <filesystem>
 #include <gtest/gtest.h>
-#include "../include/lirs.hpp"
+#include "lirs.hpp"
 
 static int slowgetpage(int key) { return key; }
 int get_cache_hits(caches::cache_t<int, int> &cache, std::vector<int> &data);
