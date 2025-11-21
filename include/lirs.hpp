@@ -55,9 +55,9 @@ private:
 
     
     CacheIt coldestLIR_toHIR() {
-        CacheIt cIt;
+
         for (auto it = stack_.rbegin(); it != stack_.rend(); ++it) {
-            cIt = cache_.find(*it);
+            auto cIt = cache_.find(*it);
             if (cIt->second.is_LIR) {
                 cIt->second.is_LIR = false;
                 return cIt;
