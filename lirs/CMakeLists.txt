@@ -13,6 +13,6 @@ target_include_directories(lirs PRIVATE include)
 
 add_executable(tests tests/tests.cc)
 target_include_directories(tests PRIVATE include)
-target_link_libraries(tests ${GTEST_LIBRARIES} pthread)
+target_link_libraries(tests GTest::gtest_main GTest::gtest pthread)
 
 gtest_discover_tests(tests)
