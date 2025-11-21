@@ -88,16 +88,7 @@ public:
             LIRSBlock newcomer = {};
             newcomer.value = slowgetpage(key);
             
-            if (stack_.size() < LIR_capacity_) {
-                newcomer.is_LIR = true;
-
-                newcomer.queueIt = queue_.end();
-            } else if (!is_full()) {
-                newcomer.is_LIR = false;
-
-                queue_.emplace_back(key);
-                newcomer.queueIt = --(queue_.end());
-            } else {
+            if (is_full()) {
                 newcomer.is_LIR = false;
                 
                 stack_.erase(find(stack_.begin(), stack_.end(), queue_.front()));
@@ -106,6 +97,15 @@ public:
                 queue_.pop_front();
                 queue_.emplace_back(key);
                 newcomer.queueIt = --(queue_.end());
+            } else if (stack_.size() >= LIR_capacity_){
+                newcomer.is_LIR = false;
+
+                queue_.emplace_back(key);
+                newcomer.queueIt = --(queue_.end());
+            } else {
+                newcomer.is_LIR = true;
+
+                newcomer.queueIt = queue_.end();
             }
             
             stack_.emplace_front(key);
