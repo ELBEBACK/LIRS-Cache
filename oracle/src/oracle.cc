@@ -5,30 +5,39 @@
 static int slowgetpage(int key) { return key; }
 
 int main() {
-    int hits = 0;
+    
     int n;
     size_t m;
     
-    std::cout << "Enter cache capacity: ";
     std::cin >> m;
+    if ( !std::cin.good() || m <= 0 )  {
+        std::cerr << "Invalid input: positive integer expected for cache capacity\n";
+        return EXIT_FAILURE;
+    }
 
-    std::cout << "Enter the number of queries: ";
     std::cin >> n;
-
-    assert(std::cin.good());
+    if ( !std::cin.good() || n <= 0 )  {
+        std::cerr << "Invalid input: positive integer expected for a number of queries\n";
+        return EXIT_FAILURE;
+    }
 
     std::vector<int> queries;
     for (int i = 0, query; i < n; ++i) {
+        
         std::cin >> query;
-        assert(std::cin.good());
+        if ( !std::cin.good() || query <= 0 )  {
+            std::cerr << "Invalid input: positive integers expected in a sequence of queries\n";
+            return EXIT_FAILURE;
+        }
         queries.push_back(query);
+    
     }
 
     oracle::cache_t<int, int> cache{m, queries};
 
+    int hits = 0;
     for (int i = 0; i < queries.size(); ++i) {
-        if (cache.lookup_update(queries[i], slowgetpage)) 
-            hits += 1;
+        hits += cache.lookup_update(queries[i], slowgetpage);
     }
 
     std::cout << hits << std::endl;
