@@ -44,7 +44,7 @@ private:
             return 3;
         if (cache_capacity <= 50) 
             return 4; 
-        return cache_capacity / 20;
+        return (cache_capacity < 100) ? 5 : cache_capacity / 20;
 
     }
 
@@ -119,13 +119,13 @@ public:
 
         LIRSBlock& hitval = hit->second;
         if (is_inQueue(key)) {
-            hitval.is_LIR = true;
-            queue_.erase(hitval.queueIt);
-            hitval.queueIt = queue_.end();
-
             auto cooled_down = coldestLIR_toHIR();
             queue_.emplace_back(cooled_down->first);
             cooled_down->second.queueIt = --(queue_.end());
+        
+            hitval.is_LIR = true;
+            queue_.erase(hitval.queueIt);
+            hitval.queueIt = queue_.end();
         } 
         
         stack_.splice(stack_.begin(), stack_, hitval.stackIt);

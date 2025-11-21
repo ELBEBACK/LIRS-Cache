@@ -9,11 +9,9 @@ git clone git@github.com:ELBEBACK/LIRS-Cache.git
 - **Navigate to the repository directory** 
 - **Build the project using the following sequence of commands:**
 ```cpp
-mkdir build
-cd build/
-
-cmake ../lirs   // or cmake ../oracle, depends on what you want to test
-make
+cmake -B build -S lirs   // or cmake -B build -S oracle, depends on what you want to test
+cmake --build build
+cd build
 ```
 ----
 ## How to use 
@@ -40,6 +38,6 @@ or
 ```bash
 ./tests
 ```
-- **The tests located in `proj/tests/tests.cc` are E2E tests**
+- **The tests are located in `proj/tests/tests.cc`**
 - **Everyone can add their testcases simply using included test blocks as templates**
 ----
