@@ -1,4 +1,4 @@
-# LIRS Caching algorithm
+# LIRS and Belady's caching algorithms
 ----
 ## Installation process
 
@@ -8,17 +8,16 @@ git clone git@github.com:ELBEBACK/LIRS-Cache.git
 ```
 - **Navigate to the repository directory** 
 - **Build the project using the following sequence of commands:**
-```cpp
-cmake -B build -S lirs   // or cmake -B build -S oracle, depends on what you want to test
+```bash
+cmake -B build
 cmake --build build
-cd build
 ```
 ----
 ## How to use 
-### LIRS or IDEAL(Oracle)
+### LIRS or Belady's Ideal(Oracle)
 
-- **To run the program**
-```
+- **To run the programs navigate to the `build` directory and proceed with either of the following commands**
+```bash
 ./lirs
 or
 ./oracle
@@ -34,10 +33,11 @@ or
 
 ### Testing
 
-- **To run the tests**
+- **To run the tests navigate to the `build` directory and proceed with either of the following commands**
 ```bash
-./tests
+./lirsTests
+or
+./optTests
 ```
-- **The tests are located in `proj/tests/tests.cc`**
-- **Everyone can add their testcases simply using included test blocks as templates**
+- **Everyone can add their testcases simply using included test blocks as samples**
 ----
