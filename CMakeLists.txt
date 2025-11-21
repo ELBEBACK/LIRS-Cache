@@ -13,11 +13,11 @@ include_directories(PRIVATE include)
 add_executable(oracle src/oracle.cc)
 add_executable(lirs src/lirs.cc)
 
-add_executable(lirsTests tests/lirsTests.cc)
-add_executable(optTests tests/optTests.cc)
+add_executable(cacheTests
+    tests/lirsTests.cc
+    tests/optTests.cc
+)
 
-target_link_libraries(lirsTests GTest::gtest_main GTest::gtest pthread)
-target_link_libraries(optTests GTest::gtest_main GTest::gtest pthread)
+target_link_libraries(cacheTests GTest::gtest_main GTest::gtest pthread)
 
-gtest_discover_tests(lirsTests)
-gtest_discover_tests(optTests)
+gtest_discover_tests(cacheTests)

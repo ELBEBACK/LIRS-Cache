@@ -9,7 +9,7 @@ static int slowgetpage(int key) { return key; }
 int get_cache_hits(oracle::cache_t<int, int> &cache, std::vector<int> &data);
 
 
-TEST(CacheTest, AllUniqueQueries)
+TEST(IdealCache, AllUniqueQueries)
 {
     std::vector<int> data = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     oracle::cache_t<int, int> cache {4, data};
@@ -18,7 +18,7 @@ TEST(CacheTest, AllUniqueQueries)
 }
 
 
-TEST(CacheTest, EvictionOfLatest)
+TEST(IdealCache, EvictionOfLatest)
 {
     std::vector<int> data = {1, 2, 3, 4, 5, 2, 3, 4, 1, 4, 6, 7};
     oracle::cache_t<int, int> cache {3, data};
@@ -27,7 +27,7 @@ TEST(CacheTest, EvictionOfLatest)
 }
 
 
-TEST(CacheTest, StayingCalmMinimumCapacity)
+TEST(IdealCache, StayingCalmMinimumCapacity)
 {
     std::vector<int> data = {1, 2, 1, 2, 1, 2, 1, 2};
     oracle::cache_t<int, int> cache {1, data};
@@ -36,7 +36,7 @@ TEST(CacheTest, StayingCalmMinimumCapacity)
 }
 
 
-TEST(CacheTest, StayingCalmGeneralCase)
+TEST(IdealCache, StayingCalmGeneralCase)
 {
     std::vector<int> data = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
     oracle::cache_t<int, int> cache {3, data};

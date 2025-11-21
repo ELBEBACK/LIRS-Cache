@@ -33,11 +33,16 @@ or
 
 ### Testing
 
-- **To run the tests navigate to the `build` directory and proceed with either of the following commands**
+- **To run the tests navigate to the `build` directory and proceed with**
 ```bash
-./lirsTests
-or
-./optTests
+./cacheTests
 ```
+- **To run a specific set of tests proceed with**
+```bash
+./cacheTests --gtest_filter="IdealCache.*"          #to run tests for Belady's algorithm 
+./cacheTests --gtest_filter="LIRS.*"                #to run tests for LIRS algorithm 
+./cacheTests --gtest_filter="LIRS.HIR2LIRPromotion" #to run specific test e.g TEST(LIRS, HIR2LIRPromotion) 
+```
+
 - **Everyone can add their testcases simply using included test blocks as samples**
 ----
