@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "oracle.hpp"
+#include "oracle/oracle.hpp"
 
 static int slowgetpage(int key) { return key; }
 

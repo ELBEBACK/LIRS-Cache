@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "lirs.hpp"
+#include "lirs/lirs.hpp"
 
 static int slowgetpage(int key) { return key; }
 

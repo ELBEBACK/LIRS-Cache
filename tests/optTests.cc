@@ -3,7 +3,7 @@
 #include <string>
 #include <filesystem>
 #include <gtest/gtest.h>
-#include "oracle.hpp"
+#include "oracle/oracle.hpp"
 
 static int slowgetpage(int key) { return key; }
 int get_cache_hits(oracle::cache_t<int, int> &cache, std::vector<int> &data);
