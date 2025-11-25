@@ -25,8 +25,8 @@ int main() {
     for (int i = 0, query; i < n; ++i) {
         
         std::cin >> query;
-        if ( !std::cin.good() || query <= 0 )  {
-            std::cerr << "Invalid input: positive integers expected in a sequence of queries\n";
+        if ( !std::cin.good() )  {
+            std::cerr << "Invalid input: integers expected in a sequence of queries\n";
             return EXIT_FAILURE;
         }
         queries.push_back(query);
