@@ -96,12 +96,12 @@ public:
                 cache_.erase(queue_.front());
                 queue_.pop_front();
                 queue_.emplace_back(key);
-                newcomer.queueIt = --(queue_.end());
+                newcomer.queueIt = std::prev(queue_.end());
             } else if (stack_.size() >= LIR_capacity_){
                 newcomer.is_LIR = false;
 
                 queue_.emplace_back(key);
-                newcomer.queueIt = --(queue_.end());
+                newcomer.queueIt = std::prev(queue_.end());
             } else {
                 newcomer.is_LIR = true;
 
@@ -121,7 +121,7 @@ public:
         if (is_inQueue(key)) {
             auto cooled_down = coldestLIR_toHIR();
             queue_.emplace_back(cooled_down->first);
-            cooled_down->second.queueIt = --(queue_.end());
+            cooled_down->second.queueIt = std::prev(queue_.end(), 1);
         
             hitval.is_LIR = true;
             queue_.erase(hitval.queueIt);
