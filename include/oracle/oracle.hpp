@@ -23,10 +23,10 @@ class cache_t{
 
 private:
 
-    static TimelineHash future_processing(std::vector<KeyT> incoming_queries) {
-        TimelineHash resulting_hash = {};
+    static TimelineHash future_processing(const std::vector<KeyT> incoming_queries) {
+        TimelineHash resulting_hash;
         
-        for (int i = 0; i < incoming_queries.size(); ++i) {
+        for (size_t i = 0; i < incoming_queries.size(); ++i) {
             resulting_hash[incoming_queries[i]].push_back(i);
         }
 
@@ -34,7 +34,7 @@ private:
     }
 
 
-    CacheIt furthest_next() {
+    CacheIt furthest_next() const {
         int furthest_dist = 0;
         CacheIt result;
 
