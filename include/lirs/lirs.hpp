@@ -80,7 +80,7 @@ public:
                         LIR_capacity_(cache_capacity_ - HIR_capacity_) {}
     
 
-    template <typename F> bool lookup_update(KeyT key, F slowgetpage) {
+    template <typename F> bool lookup_update(const KeyT &key, F slowgetpage) {
         
         CacheIt hit = cache_.find(key);
         if (hit == cache_.end()) {
@@ -91,7 +91,7 @@ public:
             if (is_full()) {
                 newcomer.is_LIR = false;
                 
-                stack_.erase(find(stack_.begin(), stack_.end(), queue_.front()));
+                stack_.erase(std::ranges::find(stack_, queue_.front()));
                 
                 cache_.erase(queue_.front());
                 queue_.pop_front();

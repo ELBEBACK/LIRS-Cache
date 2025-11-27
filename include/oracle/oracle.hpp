@@ -37,10 +37,9 @@ private:
     CacheIt furthest_next() {
         int furthest_dist = 0;
         CacheIt result;
-        HashIt tmp;
 
         for (CacheIt i = cache_.begin(); i != cache_.end(); ++i) {
-            tmp = hash_.find(i->first);
+            auto tmp = hash_.find(i->first);
             if ((tmp->second).empty())
                 return i;
 
@@ -60,7 +59,7 @@ public:
                                                     hash_(future_processing(queries)) {}
 
 
-    template <typename F> bool lookup_update(KeyT key, F slowgetpage) {
+    template <typename F> bool lookup_update(const KeyT &key, F slowgetpage) {
         
         CacheIt hitCache = cache_.find(key);
         HashIt hitHash = hash_.find(key);
