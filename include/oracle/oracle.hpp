@@ -34,11 +34,11 @@ private:
     }
 
 
-    CacheIt furthest_next() const {
+    auto furthest_next() const {
         int furthest_dist = 0;
-        CacheIt result;
+        auto result = cache_.end();
 
-        for (CacheIt i = cache_.begin(); i != cache_.end(); ++i) {
+        for (auto i = cache_.begin(); i != cache_.end(); ++i) {
             auto tmp = hash_.find(i->first);
             if ((tmp->second).empty())
                 return i;
@@ -70,14 +70,14 @@ public:
         if (hitCache == cache_.end()) {
             
             if (cache_.size() < cache_capacity_) {
-                cache_[hitHash->first] = slowgetpage(key);
+                cache_.emplace(hitHash->first, slowgetpage(key));
                 return false;
             }
 
             if ((hitHash->second).empty()) 
                 return false;
             
-            CacheIt evicteeCache = furthest_next();
+            auto evicteeCache = furthest_next();
             HashIt evicteeHash = hash_.find(evicteeCache->first);
 
             if (evicteeHash->second.empty())
@@ -87,7 +87,7 @@ public:
                 return false;
 
             cache_.erase(evicteeCache);
-            cache_[hitHash->first] = slowgetpage(key);
+            cache_.emplace(hitHash->first, slowgetpage(key));
             return false;
 
         }
