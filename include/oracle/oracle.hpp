@@ -23,24 +23,13 @@ class cache_t{
 
 private:
 
-    static TimelineHash future_processing(const std::vector<KeyT> incoming_queries) {
-        TimelineHash resulting_hash;
-        
-        for (size_t i = 0; i < incoming_queries.size(); ++i) {
-            resulting_hash[incoming_queries[i]].push_back(i);
-        }
-
-        return resulting_hash;
-    }
-
-
     auto furthest_next() const {
         int furthest_dist = 0;
         auto result = cache_.end();
 
         for (auto i = cache_.begin(); i != cache_.end(); ++i) {
             auto tmp = hash_.find(i->first);
-            if ((tmp->second).empty())
+            if (tmp->second.empty())
                 return i;
 
             if ((tmp->second).front() > furthest_dist) {
@@ -55,8 +44,14 @@ private:
 
 public:
 
-    cache_t(size_t sz, std::vector<KeyT> queries) : cache_capacity_(sz),
-                                                    hash_(future_processing(queries)) {}
+    template <typename Container>
+    cache_t(size_t sz, const Container &incoming_queries) : cache_capacity_(sz) {
+        
+        for (size_t i = 0; i < incoming_queries.size(); ++i) {
+            hash_[incoming_queries[i]].push_back(i);
+        }
+
+    }
 
 
     template <typename F> bool lookup_update(const KeyT &key, F slowgetpage) {
@@ -74,7 +69,7 @@ public:
                 return false;
             }
 
-            if ((hitHash->second).empty()) 
+            if (hitHash->second.empty()) 
                 return false;
             
             auto evicteeCache = furthest_next();
